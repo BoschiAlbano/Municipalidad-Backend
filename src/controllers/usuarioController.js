@@ -148,25 +148,25 @@ export const Login = async (req, res, next) => {
         });
 
         // Establecer token en cookie
-        res.cookie("token", token, {
-            httpOnly: false,
-            secure: false,
-            sameSite: "None",
-            maxAge: 24 * 60 * 60 * 1000, // 24 horas
-        });
+        // res.cookie("token", token, {
+        //     httpOnly: false,
+        //     secure: false,
+        //     sameSite: "None",
+        //     maxAge: 24 * 60 * 60 * 1000, // 24 horas
+        // });
 
         // Establecer session en cookie
-        const userSession = {
-            id: user.id,
-            usuario: user.Usuario,
-            email: user.Email,
-        };
-        res.cookie("session", userSession, {
-            httpOnly: false,
-            secure: false,
-            sameSite: "None",
-            maxAge: 24 * 60 * 60 * 1000, // 24 horas
-        });
+        // const userSession = {
+        //     id: user.id,
+        //     usuario: user.Usuario,
+        //     email: user.Email,
+        // };
+        // res.cookie("session", userSession, {
+        //     httpOnly: false,
+        //     secure: false,
+        //     sameSite: "None",
+        //     maxAge: 24 * 60 * 60 * 1000, // 24 horas
+        // });
 
         return res.status(200).json({
             error: 0,
@@ -176,6 +176,7 @@ export const Login = async (req, res, next) => {
                 id: user.id,
                 usuario: user.Usuario,
                 email: user.Email,
+                acceso: token,
             },
         });
     } catch (error) {
@@ -197,8 +198,8 @@ export const Login = async (req, res, next) => {
     }
 };
 
-export const Logout = async (req, res, next) => {
-    res.clearCookie("token", { httpOnly: true, path: "/" });
-    res.clearCookie("session", { httpOnly: false, path: "/" });
-    res.send("Cookie eliminada");
-};
+// export const Logout = async (req, res, next) => {
+//     res.clearCookie("token", { httpOnly: true, path: "/" });
+//     res.clearCookie("session", { httpOnly: false, path: "/" });
+//     res.send("Cookie eliminada");
+// };

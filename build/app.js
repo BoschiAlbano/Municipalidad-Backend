@@ -10,12 +10,14 @@ var _cors = _interopRequireDefault(require("cors"));
 var _agenda = _interopRequireDefault(require("./routers/agenda.router"));
 var _usuario = _interopRequireDefault(require("./routers/usuario.routers"));
 var _handleErrors = _interopRequireDefault(require("./middleware/handleErrors"));
-var _cookieParser = _interopRequireDefault(require("cookie-parser"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+// import cookieParser from "cookie-parser";
+
 var app = (0, _express["default"])();
+app.use((0, _cors["default"])()); // permite que los navegadores puedan hacer o no solicitudes dependiendo del domino que vengan
 
 // Middleware para parsear cookies
-app.use((0, _cookieParser["default"])());
+// app.use(cookieParser());
 
 //settings
 app.set("port", _config["default"].port);
@@ -26,12 +28,12 @@ app.use(_express["default"].urlencoded({
   extended: false
 })); // permite ver el body de las peticiones
 
-var corsOptions = {
-  origin: process.env.CORS_FRONTEND,
-  // Permitir a un dominio en especifico
-  credentials: true // Permitir credenciales
-};
-app.use((0, _cors["default"])(corsOptions)); // permite que los navegadores puedan hacer o no solicitudes dependiendo del domino que vengan
+// const corsOptions = {
+//     origin: process.env.CORS_FRONTEND, // Permitir a un dominio en especifico
+//     credentials: true, // Permitir credenciales
+// };
+
+// app.use(cors(corsOptions)); // permite que los navegadores puedan hacer o no solicitudes dependiendo del domino que vengan
 
 // rutas
 app.use(_usuario["default"]);

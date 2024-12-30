@@ -4,12 +4,13 @@ import cors from "cors";
 import Ruta_agenda from "./routers/agenda.router";
 import Ruta_usuario from "./routers/usuario.routers";
 import handleErrors from "./middleware/handleErrors";
-import cookieParser from "cookie-parser";
+// import cookieParser from "cookie-parser";
 
 const app = express();
+app.use(cors()); // permite que los navegadores puedan hacer o no solicitudes dependiendo del domino que vengan
 
 // Middleware para parsear cookies
-app.use(cookieParser());
+// app.use(cookieParser());
 
 //settings
 app.set("port", config.port);
@@ -18,12 +19,12 @@ app.set("port", config.port);
 app.use(express.json()); // interprete json
 app.use(express.urlencoded({ extended: false })); // permite ver el body de las peticiones
 
-const corsOptions = {
-    origin: process.env.CORS_FRONTEND, // Permitir a un dominio en especifico
-    credentials: true, // Permitir credenciales
-};
+// const corsOptions = {
+//     origin: process.env.CORS_FRONTEND, // Permitir a un dominio en especifico
+//     credentials: true, // Permitir credenciales
+// };
 
-app.use(cors(corsOptions)); // permite que los navegadores puedan hacer o no solicitudes dependiendo del domino que vengan
+// app.use(cors(corsOptions)); // permite que los navegadores puedan hacer o no solicitudes dependiendo del domino que vengan
 
 // rutas
 app.use(Ruta_usuario);

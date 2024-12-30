@@ -4,7 +4,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Register = exports.Logout = exports.Login = void 0;
+exports.Register = exports.Login = void 0;
 var _connection = require("../database/connection");
 var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
 var _bcrypt = _interopRequireDefault(require("bcrypt"));
@@ -99,7 +99,7 @@ var loginSchema = _zod.z.object({
 });
 var Login = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res, next) {
-    var validatedData, Email, Password, pool, result, user, isValidPassword, tokenPayload, token, userSession;
+    var validatedData, Email, Password, pool, result, user, isValidPassword, tokenPayload, token;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -149,25 +149,24 @@ var Login = /*#__PURE__*/function () {
               expiresIn: process.env.JWT_TIEMPO_EXPIRA,
               algorithm: "HS256"
             }); // Establecer token en cookie
-            res.cookie("token", token, {
-              httpOnly: true,
-              secure: true,
-              sameSite: "strict",
-              maxAge: 24 * 60 * 60 * 1000 // 24 horas
-            });
-
+            // res.cookie("token", token, {
+            //     httpOnly: false,
+            //     secure: false,
+            //     sameSite: "None",
+            //     maxAge: 24 * 60 * 60 * 1000, // 24 horas
+            // });
             // Establecer session en cookie
-            userSession = {
-              id: user.id,
-              usuario: user.Usuario,
-              email: user.Email
-            };
-            res.cookie("session", userSession, {
-              httpOnly: false,
-              secure: true,
-              sameSite: "strict",
-              maxAge: 24 * 60 * 60 * 1000 // 24 horas
-            });
+            // const userSession = {
+            //     id: user.id,
+            //     usuario: user.Usuario,
+            //     email: user.Email,
+            // };
+            // res.cookie("session", userSession, {
+            //     httpOnly: false,
+            //     secure: false,
+            //     sameSite: "None",
+            //     maxAge: 24 * 60 * 60 * 1000, // 24 horas
+            // });
             return _context2.abrupt("return", res.status(200).json({
               error: 0,
               mensaje: "Login Exitoso",
@@ -175,17 +174,18 @@ var Login = /*#__PURE__*/function () {
               datos: {
                 id: user.id,
                 usuario: user.Usuario,
-                email: user.Email
+                email: user.Email,
+                acceso: token
               }
             }));
-          case 25:
-            _context2.prev = 25;
+          case 22:
+            _context2.prev = 22;
             _context2.t0 = _context2["catch"](0);
             console.error("Error en login:", _context2.t0.message);
 
             // Manejar errores de validación de Zod
             if (!(_context2.t0 instanceof _zod.z.ZodError)) {
-              _context2.next = 30;
+              _context2.next = 27;
               break;
             }
             return _context2.abrupt("return", res.status(400).json({
@@ -198,44 +198,23 @@ var Login = /*#__PURE__*/function () {
                 };
               })
             }));
-          case 30:
+          case 27:
             return _context2.abrupt("return", next(new Error("Error en la autenticación")));
-          case 31:
+          case 28:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[0, 25]]);
+    }, _callee2, null, [[0, 22]]);
   }));
   return function Login(_x4, _x5, _x6) {
     return _ref2.apply(this, arguments);
   };
 }();
+
+// export const Logout = async (req, res, next) => {
+//     res.clearCookie("token", { httpOnly: true, path: "/" });
+//     res.clearCookie("session", { httpOnly: false, path: "/" });
+//     res.send("Cookie eliminada");
+// };
 exports.Login = Login;
-var Logout = /*#__PURE__*/function () {
-  var _ref3 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res, next) {
-    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-      while (1) {
-        switch (_context3.prev = _context3.next) {
-          case 0:
-            res.clearCookie("token", {
-              httpOnly: true,
-              path: "/"
-            });
-            res.clearCookie("session", {
-              httpOnly: false,
-              path: "/"
-            });
-            res.send("Cookie eliminada");
-          case 3:
-          case "end":
-            return _context3.stop();
-        }
-      }
-    }, _callee3);
-  }));
-  return function Logout(_x7, _x8, _x9) {
-    return _ref3.apply(this, arguments);
-  };
-}();
-exports.Logout = Logout;
