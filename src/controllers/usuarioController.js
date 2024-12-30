@@ -151,7 +151,7 @@ export const Login = async (req, res, next) => {
         res.cookie("token", token, {
             httpOnly: false,
             secure: false,
-            sameSite: "none",
+            sameSite: "None",
             maxAge: 24 * 60 * 60 * 1000, // 24 horas
         });
 
@@ -164,7 +164,7 @@ export const Login = async (req, res, next) => {
         res.cookie("session", userSession, {
             httpOnly: false,
             secure: false,
-            sameSite: "none",
+            sameSite: "None",
             maxAge: 24 * 60 * 60 * 1000, // 24 horas
         });
 
